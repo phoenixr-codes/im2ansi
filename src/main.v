@@ -11,16 +11,20 @@ import stbi
 import rand
 import rand.seed
 
-@[footer: '\nExamples\n========\n\nim2ansi --log DEBUG --path image.jpg --format svg -s 30']
+@[footer: '
+Examples
+========
+
+im2ansi --log DEBUG --path image.jpg --format svg -s 30']
 @[xdoc: 'Convert images into ANSI art']
 @[name: 'im2ansi']
 struct Config {
-	log_level     string @[long: log; xdoc: 'Set the log level (possible values are DEBUG|INFO|WARN|ERROR|FATAL) (default: INFO)']
+	log_level     string @[long: log; xdoc: 'Set the log level (possible values are DEBUG|INFO|WARN|ERROR|FATAL) (default is INFO)']
 	path          string @[long: path; short: p; xdoc: 'The path to the image to convert']
 	seed          u32    @[long: seed; xdoc: 'The seed to use for the randomizer']
-	format        string @[long: format; short: f; xdoc: 'The format to use (possible values are ansi|svg) (default: ansi)']
-	size          int    @[long: size; short: s; xdoc: 'Set the size of the ANSI art (default: 30)']
-	character_set string @[short: c; xdoc: 'The character set to include in the ANSI art (default: 01)']
+	format        string @[long: format; short: f; xdoc: 'The format to use (possible values are ansi|svg) (default is ansi)']
+	size          int    @[long: size; short: s; xdoc: 'Set the size of the ANSI art (default is 30)']
+	character_set string @[short: c; xdoc: 'The character set to include in the ANSI art (default is 01)']
 	show_help     bool   @[long: help; short: h; xdoc: 'Show help and exit']
 }
 
