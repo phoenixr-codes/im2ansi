@@ -25,6 +25,7 @@ struct Config {
 	format        string @[long: format; short: f; xdoc: 'The format to use (possible values are ansi|svg) (default is ansi)']
 	size          int    @[long: size; short: s; xdoc: 'Set the size of the ANSI art (default is 30)']
 	character_set string @[short: c; xdoc: 'The character set to include in the ANSI art (default is 01)']
+	cycle         bool   @[long: cycle; xdoc: 'Cycle the character set instead of randomizing']
 	show_help     bool   @[long: help; short: h; xdoc: 'Show help and exit']
 }
 
@@ -83,6 +84,7 @@ fn main() {
 		format:        'ansi'
 		size:          30
 		character_set: '01'
+		cycle:         false
 		show_help:     false
 	}, os.args,
 		skip:  1
@@ -125,6 +127,7 @@ fn main() {
 	rand.seed([config.seed, config.seed])
 
 	mut pixels := [][]Pixel{}
+	mut i := 0
 	for y in 0 .. resized_image.height {
 		pixels << [[]]
 		for x in 0 .. resized_image.width {
@@ -137,6 +140,8 @@ fn main() {
 				// generate two because characters usually have a ratio of 1:2
 				character := if a < 100 {
 					` `
+				} else if config.cycle {
+					config.character_set[i++ % config.character_set.len]
 				} else {
 					rand.string_from_set(config.character_set, 1).runes()[0]
 				}
