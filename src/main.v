@@ -22,7 +22,7 @@ struct Config {
 	log_level     string @[long: log; xdoc: 'Set the log level (possible values are DEBUG|INFO|WARN|ERROR|FATAL) (default is INFO)']
 	path          string @[long: path; short: p; xdoc: 'The path to the image to convert']
 	seed          u32    @[long: seed; xdoc: 'The seed to use for the randomizer']
-	format        string @[long: format; short: f; xdoc: 'The format to use (possible values are ansi|svg) (default is ansi)']
+	format        string @[long: format; short: f; xdoc: 'The format to use (possible values are ansi|html|svg) (default is ansi)']
 	size          int    @[long: size; short: s; xdoc: 'Set the size of the ANSI art (default is 30)']
 	character_set string @[short: c; xdoc: 'The character set to include in the ANSI art (default is 01)']
 	cycle         bool   @[long: cycle; xdoc: 'Cycle the character set instead of randomizing']
@@ -63,6 +63,28 @@ fn write_svg(mut buf Writer, pixels [][]Pixel) !int {
 	}
 	buf.write('</text>'.bytes())!
 	buf.write('</svg>'.bytes())!
+	return 0
+}
+
+fn write_html(mut buf Writer, pixels [][]Pixel) !int {
+	buf.write('<!DOCTYPE html>'.bytes())!
+	buf.write('<html lang="en">'.bytes())!
+	buf.write('<head>'.bytes())!
+	buf.write('<style>'.bytes())!
+	buf.write('body { background-color: black; }'.bytes())!
+  buf.write('.art { line-height: 0.8rem; letter-spacing: 0.4px; }'.bytes())!
+	buf.write('</style>'.bytes())!
+	buf.write('</head>'.bytes())!
+	buf.write('<body>'.bytes())!
+	buf.write('<pre class="art"><code>'.bytes())!
+	for row in pixels {
+		for pixel in row {
+			buf.write('<span style="color: ${pixel.color.hex()};">${pixel.character}</span>'.bytes())!
+		}
+		buf.write('<br />'.bytes())!
+	}
+	buf.write('</code></pre>'.bytes())!
+	buf.write('</body>'.bytes())!
 	return 0
 }
 
@@ -157,6 +179,8 @@ fn main() {
 	mut buf := os.stdout()
 	if config.format == 'ansi' {
 		write_ansi(mut &buf, pixels)!
+	} else if config.format == 'html' {
+		write_html(mut &buf, pixels)!
 	} else if config.format == 'svg' {
 		write_svg(mut &buf, pixels)!
 	} else {

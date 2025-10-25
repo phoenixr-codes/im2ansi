@@ -5,11 +5,13 @@
     <img align="center" src="./logo.svg" />
 </p>
 
-`im2ansi` is a tool for turning images into ANSI art as seen above.
+`im2ansi` is a tool for turning images into ANSI art as seen above. It supports
+ANSI (terminal), HTML and SVG output.
 
 ## Installation
 
-Go to [Releases][] and download the appropiate executable or install it via [V][V language]:
+Go to [Releases][] and download the executable for your system or install it via
+[V][V language]:
 
 ```console
 v install --git https://github.com/phoenixr-codes/im2ansi
@@ -38,6 +40,11 @@ v .
 > **Generate an ANSI art as SVG from `image.jpg` of size 50 and enable debugging**
 > ```bash
 > im2ansi --path image.jpg -s 50 --format svg --log DEBUG > output.svg
+> ```
+
+> **Generate an ANSI art as HTML from `image.jpg` with embedded text**
+> ```bash
+> im2ansi --path image.jpg -s 80 --format html -c THEENDISNEVER --cycle > output.html
 > ```
 
 
